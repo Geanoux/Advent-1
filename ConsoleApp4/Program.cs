@@ -5,26 +5,49 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp4
+namespace Day1
 {
     class Program
     {
         static void Main(string[] args)
         {
-            using (StreamReader sr = new StreamReader("../../adv.txt"))
+            int freqValue = 0;
+            List<int> previousVals = new List<int>();
+            bool hasMatchFound = false;
 
+            while (!hasMatchFound)
             {
-                string line;
-                int sum = 0;
-                while ((line = sr.ReadLine()) !=null)
+                try
                 {
-                    int x = Convert.ToInt32(line);
-                    sum = sum + x;
-                    Console.WriteLine(sum);
-                }
-            }
+                    using (StreamReader sr = new StreamReader("../../adv.txt"))
+                    {
+                        string line;
+                        while ((line = sr.ReadLine()) != null)
+                        {
+                            freqValue += Convert.ToInt32(line);
+                            foreach (int prevs in previousVals)
+                            {
+                                if (prevs == freqValue)
+                                {
+                                    Console.WriteLine("Found match: " + freqValue);
+                                    hasMatchFound = true;
+                                    break;
+                                }
+                            }
+                            previousVals.Add(freqValue);
 
-                Console.ReadLine();
+
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Exception " + e);
+                }
+                Console.WriteLine("endVal: " + freqValue);
+            }
+            Console.WriteLine(freqValue);
+            Console.ReadKey();
         }
     }
 }
